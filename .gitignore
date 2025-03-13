@@ -24,3 +24,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#Files -src/pythonFile klasörünü git'e dahil edip, içindeki dosyaları ignore etmek için
+src/pythonFile/*
+!src/pythonFile/.gitkeep

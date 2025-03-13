@@ -1,22 +1,38 @@
 import React, { useEffect } from 'react';
 import "../../components/ButtonMotorcycle.css";
 import "./MotorcyclePage.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
-const Motorcycle = () => {
-
+const Motorcycle = ({ setIsAuthenticated }) => {
+    console.log("setIsAuthenticated:", setIsAuthenticated);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        document.title = "Motorcycle Process"; // Sayfa başlığını değiştir
-        document.body.className = "motorcycle-page"; // Arka plan rengini doğru ayarla
-    }, []);
 
-    const handleLogout = () => {
-        navigate("/"); // Giriş ekranına geri yönlendir
+        document.title = "Motorcycle Process";
+        document.body.className = "motorcycle-page";
+
+        // Eğer kullanıcı giriş yapmadan bir şekilde /motorcycle sayfasına geldiyse, /sign-in sayfasına yönlendirilir.
+        const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+        if (!isAuthenticated) {
+            navigate("/sign-in", { replace: true });
+        }
+
+        // Eğer /motorcycle dışında farklı bir URL'ye gidilmeye çalışılırsa /motorcycle'a yönlendirir.
+        if (location.pathname !== "/motorcycle") {
+            navigate("/motorcycle", { replace: true });
+        }
+
+    }, [location, navigate]);
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        setIsAuthenticated(false);
+        localStorage.setItem("isAuthenticated", "false");
+        navigate("/sign-in", { replace: true });
     };
-
 
     return (
         <div className='container'>
@@ -39,7 +55,6 @@ const Motorcycle = () => {
                 <button onClick={handleLogout}>Log Out</button>
             </div>
         </div>
-
 
     )
 }

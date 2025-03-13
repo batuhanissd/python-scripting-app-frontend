@@ -2,17 +2,19 @@ import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./signInPage.css";
 
-const SignIn = () => {
+const SignIn = ({ setIsAuthenticated }) => {
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        document.body.className = "signin-page"; // Arka planı signin için ayarla
+        document.body.className = "signin-page";
     }, []);
 
     const handleSignIn = (e) => {
-        e.preventDefault(); // Sayfanın yeniden yüklenmesini engelle
-        navigate("/Motorcycle", { replace: true }); // Geri butonu çalışmaz
+        e.preventDefault(); // Sayfanın yeniden yüklenmesini engeller.
+        setIsAuthenticated(true); //Giriş işlemi başarılı
+        localStorage.setItem("isAuthenticated", "true");
+        navigate("/motorcycle", { replace: true }); // Geri butonu çalışmaz.
     };
 
     return (
