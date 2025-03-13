@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 
 const Motorcycle = ({ setIsAuthenticated }) => {
-    console.log("setIsAuthenticated:", setIsAuthenticated);
     const navigate = useNavigate();
     const location = useLocation();
 

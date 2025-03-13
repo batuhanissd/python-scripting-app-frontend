@@ -1,0 +1,41 @@
+body.formmotorcycle-page {
+    font-family: Arial, sans-serif;
+    display: flex;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* Tüm ekranı kapla */
+    box-sizing: border-box;
+}
+
+.form-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Küçük ekranlarda combobox'ları alt alta al */
+@media (max-width: 1300px) {
+    .form-container {
+        flex-wrap: wrap;
+    }
+}
+
+.logout button {
+    width: 100px;
+    padding: 10px 12px;
+    background: #ffffff;
+    color: #ff0000;
+    font-size: 15px;
+    border: 3px solid#d60000;
+    border-radius: 10px;
+    cursor: pointer;
+    position: fixed;
+    font-weight: bold;
+    bottom: 30px;
+    right: 30px;
+}

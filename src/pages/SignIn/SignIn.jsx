@@ -14,7 +14,8 @@ const SignIn = ({ setIsAuthenticated }) => {
         e.preventDefault(); // Sayfanın yeniden yüklenmesini engeller.
         setIsAuthenticated(true); //Giriş işlemi başarılı
         localStorage.setItem("isAuthenticated", "true");
-        navigate("/motorcycle", { replace: true }); // Geri butonu çalışmaz.
+        navigate("/formmotorcycle", { replace: true });
+        //navigate("/motorcycle", { replace: true }); // Geri butonu çalışmaz.
     };
 
     return (

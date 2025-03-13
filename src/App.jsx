@@ -1,10 +1,12 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import FormMotorcyclePage from './pages/FormMotorcycle/FormMotorcycle.jsx';
 import MotorcyclePage from './pages/Motorcycle/Motorcycle.jsx';
 import SignInPage from "./pages/SignIn/SignIn";
 
 function App() {
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("isAuthenticated") === "true"
   );
@@ -18,11 +20,11 @@ function App() {
     <Router>
       <Routes>
 
-        <Route path="/sign-in" element={isAuthenticated ? <MotorcyclePage setIsAuthenticated={handleAuthChange} /> : <SignInPage setIsAuthenticated={handleAuthChange} />} />
+        <Route path="/sign-in" element={isAuthenticated ? <FormMotorcyclePage setIsAuthenticated={handleAuthChange} /> : <SignInPage setIsAuthenticated={handleAuthChange} />} />
 
-        <Route path="/motorcycle/*" element={isAuthenticated ? <MotorcyclePage setIsAuthenticated={handleAuthChange} /> : <Navigate to="/sign-in" replace />} />
+        <Route path="/formmotorcycle/*" element={isAuthenticated ? <FormMotorcyclePage setIsAuthenticated={handleAuthChange} /> : <Navigate to="/sign-in" replace />} />
 
-        <Route path="*" element={isAuthenticated ? <MotorcyclePage setIsAuthenticated={handleAuthChange} /> : <Navigate to="/sign-in" replace />} />
+        <Route path="*" element={isAuthenticated ? <FormMotorcyclePage setIsAuthenticated={handleAuthChange} /> : <Navigate to="/sign-in" replace />} />
 
       </Routes>
     </Router>
