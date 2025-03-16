@@ -7,19 +7,31 @@ body.formmotorcycle-page {
     min-height: 100vh;
     /* Tüm ekranı kapla */
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 .form-container {
     display: flex;
+    justify-content: center;
     flex-wrap: nowrap;
-    gap: 10px;
+    gap: 15px;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     width: 100%;
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
 }
 
 /* Küçük ekranlarda combobox'ları alt alta al */
-@media (max-width: 1300px) {
+@media (max-width: 1400px) {
     .form-container {
         flex-wrap: wrap;
     }
@@ -38,4 +50,37 @@ body.formmotorcycle-page {
     font-weight: bold;
     bottom: 30px;
     right: 30px;
+}
+
+.logout button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.run {
+    display: flex;
+    justify-content: right;
+    position: absolute;
+    /* Form container'ından bağımsız konumlandırma */
+    top: calc(100% + 30px);
+    right: 2%;
+    /* Container'ın hemen altına 30px mesafe */
+}
+
+.run button {
+    width: 100px;
+    padding: 10px 12px;
+    background: #446ae7;
+    color: #f6f6f6;
+    font-size: 15px;
+    border: 3px solid #385ac9;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.run button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }

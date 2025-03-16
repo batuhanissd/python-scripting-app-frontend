@@ -27,4 +27,5 @@ dist-ssr
 
 #Files -src/pythonFile klasörünü git'e dahil edip, içindeki dosyaları ignore etmek için
 src/pythonFile/*
+src/CameraList/*
 !src/pythonFile/.gitkeep

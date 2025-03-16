@@ -10,13 +10,39 @@ const SignIn = ({ setIsAuthenticated }) => {
         document.body.className = "signin-page";
     }, []);
 
-    const handleSignIn = (e) => {
-        e.preventDefault(); // Sayfanın yeniden yüklenmesini engeller.
-        setIsAuthenticated(true); //Giriş işlemi başarılı
-        localStorage.setItem("isAuthenticated", "true");
-        navigate("/formmotorcycle", { replace: true });
-        //navigate("/motorcycle", { replace: true }); // Geri butonu çalışmaz.
+    const handleSignIn = async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById("entryUsername").value;
+        const password = document.getElementById("entryPassword").value;
+
+        try {
+            const response = await fetch("https://pts.mangobulut.com/apib/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await response.json();
+
+
+            if (!response.ok) {// Hata durumununda alert verir ve kodun devam etmesini engeller.
+
+                alert(data.message === "Invalid credentials" ? "Invalid username and password!" : data.message || "Sign in failed!");
+                return;
+            }
+
+            localStorage.setItem("token", data.accessToken); // Tokeni localStorage'a kaydeder.
+            setIsAuthenticated(true);
+            navigate("/formmotorcycle", { replace: true });
+
+
+        } catch (error) {
+            alert(error.message);
+        }
     };
+
 
     return (
         <div className='signIn-container'>

@@ -1,14 +1,6 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { FormControl, InputLabel, MenuItem, Select, OutlinedInput, Chip, IconButton, Box } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -21,7 +13,8 @@ const MenuProps = {
     },
 };
 
-export default function ComboBoxForm({ title, options }) {
+//export default function ({ title, options, value, onChange, multipleChoice = false }) {
+export default function ({ title, options, multipleChoice = false }) {
     //const theme = useTheme();
     const [selectedItems, setSelectedItems] = React.useState([]);
 
@@ -39,14 +32,14 @@ export default function ComboBoxForm({ title, options }) {
     return (
         <div>
 
-            <FormControl sx={{ m: 1, width: 300 }}>
+            <FormControl sx={{ m: 1, width: 280, flexGrow: 1 }}>
                 <InputLabel id="multi-select-label">{title}</InputLabel>
                 <Select
                     labelId="multi-select-label"
                     id="multi-select"
-                    multiple
                     value={selectedItems}
                     onChange={handleChange}
+                    multiple={multipleChoice}
                     input={<OutlinedInput id="select-multiple-chip"
                         label={title}
                     />}
@@ -78,26 +71,3 @@ export default function ComboBoxForm({ title, options }) {
         </div>
     );
 }
-
-
-
-
-
-
-// import React from "react";
-// import "./ComboBoxForm.css";
-
-// const ComboBoxForm = ({ label, options }) => {
-//     return (
-//         <div className="combo-box">
-//             <label>{label}</label>
-//             <select>
-//                 {options.map((option, index) => (
-//                     <option key={index} value={option}>{option}</option>
-//                 ))}
-//             </select>
-//         </div>
-//     );
-// };
-
-// export default ComboBoxForm;

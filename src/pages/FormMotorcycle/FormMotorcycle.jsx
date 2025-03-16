@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ComboBox from "../../components/ComboBoxForm";
+import ComboBox from "../../components/ComboboxForm";
 import Node from "../../CameraList/node";
 import SubNode from "../../CameraList/subnode";
 import Camera from "../../CameraList/camera";
@@ -17,6 +17,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     }, []);
     document.title = "Motorcycle Process";
 
+
     const handleLogout = (e) => {
         e.preventDefault();
         setIsAuthenticated(false);
@@ -29,11 +30,15 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
         <div className="container">
             <div className="form-container">
 
-                <ComboBox title="Node" options={Node} />
-                <ComboBox title="Sub Node" options={SubNode} />
-                <ComboBox title="Camera" options={Camera} />
+                <ComboBox title="Node" options={Node} multipleChoice={true} />
+                <ComboBox title="Sub Node" options={SubNode} multipleChoice={true} />
+                <ComboBox title="Camera" options={Camera} multipleChoice={true} />
                 <ComboBox title="Process Type" options={ProcessType} />
 
+            </div>
+
+            <div className="run">
+                <button>Run</button>
             </div>
 
             <div className="logout">
