@@ -32,7 +32,7 @@ export default function ({ title, options, multipleChoice = false }) {
     return (
         <div>
 
-            <FormControl sx={{ m: 1, width: 280, flexGrow: 1 }}>
+            <FormControl sx={{ m: 1, width: 350, flexGrow: 1 }}>
                 <InputLabel id="multi-select-label">{title}</InputLabel>
                 <Select
                     labelId="multi-select-label"

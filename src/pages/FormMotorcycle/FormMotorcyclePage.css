@@ -17,7 +17,7 @@ body.formmotorcycle-page {
     flex-wrap: nowrap;
     gap: 15px;
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); */
     width: 100%;
     margin: 0 auto;
 }
@@ -61,10 +61,8 @@ body.formmotorcycle-page {
     display: flex;
     justify-content: right;
     position: absolute;
-    /* Form container'ından bağımsız konumlandırma */
     top: calc(100% + 30px);
-    right: 2%;
-    /* Container'ın hemen altına 30px mesafe */
+    right: 47%;
 }
 
 .run button {

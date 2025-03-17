@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ComboBox from "../../components/ComboboxForm";
-import Node from "../../CameraList/node";
-import SubNode from "../../CameraList/subnode";
-import Camera from "../../CameraList/camera";
+//import Node from "../../CameraList/node";
+import { getNode } from "../../api/apis";
+// import SubNode from "../../CameraList/subnode";
+// import Camera from "../../CameraList/camera";
 import ProcessType from "../../CameraList/processtype";
 //import "../../components/ComboBoxForm.css";
 import { useNavigate } from "react-router-dom";
@@ -11,12 +12,27 @@ import "./FormMotorcyclePage.css";
 const FormMotorcycle = ({ setIsAuthenticated }) => {
 
     const navigate = useNavigate();
+    const [nodeOptions, setNodeOptions] = useState([]);
 
     useEffect(() => {
         document.body.className = "formmotorcycle-page";
+        const fetchNodes = async () => {
+            try {
+                const nodes = await getNode();
+                if (nodes && Array.isArray(nodes)) {
+                    setNodeOptions(nodes.map(node => node.name));
+                } else {
+                    setNodeOptions([]);
+                }
+            } catch (error) {
+                //hata-alert çağrılacak
+                setNodeOptions([]);
+            }
+        };
+
+        fetchNodes();
     }, []);
     document.title = "Motorcycle Process";
-
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -30,9 +46,9 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
         <div className="container">
             <div className="form-container">
 
-                <ComboBox title="Node" options={Node} multipleChoice={true} />
-                <ComboBox title="Sub Node" options={SubNode} multipleChoice={true} />
-                <ComboBox title="Camera" options={Camera} multipleChoice={true} />
+                <ComboBox title="Node" options={nodeOptions} multipleChoice={true} />
+                <ComboBox title="Sub Node" options={nodeOptions} multipleChoice={true} />
+                <ComboBox title="Camera" options={nodeOptions} multipleChoice={true} />
                 <ComboBox title="Process Type" options={ProcessType} />
 
             </div>
@@ -45,8 +61,6 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                 <button onClick={handleLogout}>Log Out</button>
             </div>
         </div>
-
-
 
     );
 };
