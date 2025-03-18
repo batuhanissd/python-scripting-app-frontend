@@ -13,16 +13,20 @@ const MenuProps = {
     },
 };
 
-//export default function ({ title, options, value, onChange, multipleChoice = false }) {
-export default function ({ title, options, multipleChoice = false }) {
-    //const theme = useTheme();
-    const [selectedItems, setSelectedItems] = React.useState([]);
+export default function ({ title, options, value, onChange, multipleChoice = false }) {
+    const [selectedItems, setSelectedItems] = React.useState(value || []);  // Başlangıçta gelen değeri kullan
 
+    //Öge seçildiğinde state'lerde güncelleme yapar.
     const handleChange = (event) => {
         const {
             target: { value },
         } = event;
-        setSelectedItems(typeof value === 'string' ? value.split(',') : value);
+        const newValue = typeof value === 'string' ? value.split(',') : value;
+        setSelectedItems(newValue);
+
+        if (onChange) {
+            onChange(newValue);
+        }
     };
 
     const handleDelete = (itemToDelete) => {
@@ -45,10 +49,10 @@ export default function ({ title, options, multipleChoice = false }) {
                     />}
                     renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => (
+                            {selected.map((value, index) => (
                                 <Chip
-                                    key={value}
-                                    label={value}
+                                    key={`${value.id}-${index}`}
+                                    label={value.name}
                                     onDelete={() => handleDelete(value)}
                                     deleteIcon={
                                         <IconButton size="small" onMouseDown={(event) => event.stopPropagation()}>
@@ -57,15 +61,18 @@ export default function ({ title, options, multipleChoice = false }) {
                                     }
                                 />
                             ))}
+
                         </Box>
                     )}
                     MenuProps={MenuProps}
                 >
+
                     {options.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
+                        <MenuItem key={option.id} value={option}>
+                            {option.name}
                         </MenuItem>
                     ))}
+
                 </Select>
             </FormControl>
         </div>
