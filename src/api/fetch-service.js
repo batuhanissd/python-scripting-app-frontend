@@ -1,14 +1,26 @@
-const API_URL = "http://localhost:3000/camsetting";
-const accessToken = localStorage.getItem("accessToken");
+const FETCH_OBJECT_API_URL = import.meta.env.VITE_FETCHSERVICE_API_URL;
+const RUN_PYTHON_API_URL = import.meta.env.VITE_RUN_PYTHON_API_URL;
+
+if (!FETCH_OBJECT_API_URL || !RUN_PYTHON_API_URL) {
+  throw new Error("API_URL environment variables are missing.");
+}
+
+function getHeaders() {
+  const accessToken = localStorage.getItem("accessToken");
+
+  if (!accessToken) throw new Error("AccessToken is missing");
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  };
+}
 
 export async function fetchObject(endpoint) {
   try {
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const response = await fetch(`${FETCH_OBJECT_API_URL}${endpoint}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: getHeaders(),
     });
     if (!response.ok) throw new Error();
     return response;
@@ -20,16 +32,13 @@ export async function fetchObject(endpoint) {
 
 export async function runPythonSc(ipAddresses) {
   try {
-    const response = await fetch(
-      "http://localhost:3000/camsetting/getaccesstoken",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ipAddresses: ipAddresses.map((ip) => ({ ipAddress: ip })),
-        }),
-      }
-    );
+    const response = await fetch(`${RUN_PYTHON_API_URL}`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify({
+        ipAddresses: ipAddresses.map((ip) => ({ ipAddress: ip })),
+      }),
+    });
 
     const data = await response.json();
     return data;
