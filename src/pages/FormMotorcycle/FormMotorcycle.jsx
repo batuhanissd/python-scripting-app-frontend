@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ComboBox from "../../components/ComboboxForm";
 import { getNode, getSubNode, getCamera } from "../../api/apis";
-import ProcessType from "../../CameraList/processtype";
+import ProcessType from "./processtype";
 import { useNavigate } from "react-router-dom";
 import "./FormMotorcyclePage.css";
 
