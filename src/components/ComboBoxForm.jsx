@@ -13,7 +13,7 @@ const MenuProps = {
     },
 };
 
-export default function ({ title, options, value, onChange, multipleChoice = false }) {
+export default function ({ title, options, value, onChange, onDelete, multipleChoice = false }) {
     const [selectedItems, setSelectedItems] = React.useState(value || []);  // Başlangıçta gelen değeri kullan
 
     //Öge seçildiğinde state'lerde güncelleme yapar.
@@ -30,8 +30,18 @@ export default function ({ title, options, value, onChange, multipleChoice = fal
     };
 
     const handleDelete = (itemToDelete) => {
+
         setSelectedItems((prev) => prev.filter((item) => item !== itemToDelete));
+
+        // Üst bileşene bildirir.
+        if (onDelete) {
+            onDelete(itemToDelete);
+        }
     };
+
+    React.useEffect(() => {
+        setSelectedItems(value || []);
+    }, [value]);
 
     return (
         <div>

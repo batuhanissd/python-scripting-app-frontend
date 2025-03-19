@@ -102,15 +102,19 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
 
     //Bir node seçildiğinde ona bağlı olan subnode'ları getirir.
     const handleNodeChange = async (selected) => {
-        setSelectedNode(selected);
 
-        if (selected.length > 0) {
-            const selectedIds = selected.map(node => node.id);  // Seçili node'ların ID'lerini diziye çevirir.
-            const filtered = allSubNodes.filter(sub => selectedIds.includes(sub.nodeId)); //O node'a sahip subnode'ları filtreler.
-            setSubNodeOptions(filtered);
-        } else {
-            setSubNodeOptions([]); // Eğer hiçbir şey seçilmezse boş gösterir.
-        }
+        setTimeout(() => {
+            setSelectedNode(selected);
+
+            if (selected.length > 0) {
+                const selectedIds = selected.map(node => node.id);  // Seçili node'ların ID'lerini diziye çevirir.
+                const filtered = allSubNodes.filter(sub => selectedIds.includes(sub.nodeId)); //O node'a sahip subnode'ları filtreler.
+                setSubNodeOptions(filtered);
+            } else {
+                setSubNodeOptions([]); // Eğer hiçbir şey seçilmezse boş gösterir.
+            }
+
+        }, 100); //Bazen node hızlı seçildiğinde state güncellenmiyor. O sebeple timeout kullandım. 
 
     };
 
@@ -132,6 +136,79 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
         setSelectedCamera(selected);
     }
 
+    const handleDelete = (deleteItem, type) => {
+        try {
+            if (type === "Node") {
+
+                //Seçili node'lar güncellendi.
+                const newSelectNode = selectedNode.filter(node => node.id !== deleteItem.id);
+                setSelectedNode(newSelectNode);
+
+                //Subnode seçenekleri güncellendi.
+                const newSubNodesOptions = subNodeOptions.filter(sub => sub.nodeId !== deleteItem.id);
+                setSubNodeOptions(newSubNodesOptions);
+
+                //Eğer seçili subnode varsa ona ait olan cameralar listeden kaldırır.
+                if (selectedSubNode) {
+
+                    if (selectedCamera) {
+
+                        const subNodesToDelete = allSubNodes
+                            .filter(sub => sub.nodeId === deleteItem.id)
+                            .map(sub => sub.id);
+
+                        // Seçili kameralar arasında, silinecek `SubNode`'lara bağlı olanları cameraları kaldırır.
+                        const newSelectCamera = selectedCamera.filter(cam => !subNodesToDelete.includes(cam.subId));
+
+                        setSelectedCamera(newSelectCamera);
+
+                        //Camera seçenekleri kaldırılır. //Cameralar seçilen subnode'a bağlı olarak listelendiği için.
+                        const newCameraOptions = selectedCamera.filter(cam => !subNodesToDelete.includes(cam.subId));
+                        setCameraOptions(newCameraOptions);
+
+                    }
+
+                    //Seçili subnode'lar güncellenir.
+                    const newSelectSubnode = selectedSubNode.filter(sub => sub.nodeId !== deleteItem.id);
+                    setSelectedSubNode(newSelectSubnode);
+
+                }
+                document.activeElement.blur(); // Odağı kaldır (Combobox'ın mavi kalmasını engelle)
+
+            }
+
+            if (type === "Sub Node") {
+
+                // Seçili kameralar içinde, silinen subNode'a bağlı olanları kaldırır.
+                const newSelectSubnode = selectedSubNode.filter(sub => sub.id !== deleteItem.id);
+                setSelectedSubNode(newSelectSubnode);
+
+                //Camera options'ları güncellenir.
+                const newCameraOptions = cameraOptions.filter(cam => cam.subId !== deleteItem.id);
+                setCameraOptions(newCameraOptions);
+
+                if (selectedCamera) {
+
+                    //Seçili cameralardan silinen subnode'a bağlı olan cameralar seçimden kaldırılır.
+                    const newSelectCamera = selectedCamera.filter(cam => cam.subId !== deleteItem.id);
+                    setSelectedCamera(newSelectCamera);
+
+                    document.activeElement.blur();
+                }
+            }
+
+            if (type === "Camera") {
+
+                //Seçili cameralar güncellenilir.
+                const newSelectCamera = selectedCamera.filter(cam => cam.id !== deleteItem.id);
+                setSelectedCamera(newSelectCamera);
+                document.activeElement.blur();
+            }
+        } catch (error) {
+            console.error("Silme işlemi sırasında hata oluştu:", error);
+        }
+    };
+
     return (
 
         <div className="container">
@@ -145,6 +222,10 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     onChange={(selected) => {
                         handleNodeChange(selected);
                     }}
+                    onDelete={(deletedItem) => {
+                        handleDelete(deletedItem, "Node");
+                    }}
+
                     multipleChoice={true}
                 />
                 <ComboBox
@@ -154,13 +235,18 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     onChange={(selected) => {
                         handleSubNodeChange(selected);
                     }}
-                    multipleChoice={true}
+                    onDelete={(deletedItem) => {
+                        handleDelete(deletedItem, "Sub Node");
+                    }} multipleChoice={true}
                 />
                 <ComboBox
                     title="Camera"
                     options={cameraOptions}
                     value={selectedCamera}
                     onChange={(selected) => { handleCameraChange(selected); }}
+                    onDelete={(deletedItem) => {
+                        handleDelete(deletedItem, "Camera");
+                    }}
                     multipleChoice={true}
                 />
 
