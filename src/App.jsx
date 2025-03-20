@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "r
 import { useState } from "react";
 import FormMotorcyclePage from './pages/FormMotorcycle/FormMotorcycle.jsx';
 import SignInPage from "./pages/SignIn/SignIn";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//import { ToastProvider } from "./components/Alerts";
 function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(
