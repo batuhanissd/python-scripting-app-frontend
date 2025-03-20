@@ -2,9 +2,10 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import FormMotorcyclePage from './pages/FormMotorcycle/FormMotorcycle.jsx';
-import MotorcyclePage from './pages/Motorcycle/Motorcycle.jsx';
 import SignInPage from "./pages/SignIn/SignIn";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+//import { ToastProvider } from "./components/Alerts";
 function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -18,6 +19,7 @@ function App() {
 
   return (
     <Router>
+      <ToastContainer />
       <Routes>
 
         <Route path="/sign-in" element={isAuthenticated ? <FormMotorcyclePage setIsAuthenticated={handleAuthChange} /> : <SignInPage setIsAuthenticated={handleAuthChange} />} />

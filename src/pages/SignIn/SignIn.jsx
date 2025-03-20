@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./signInPage.css";
 import { getResponse } from "../../api/apis";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const SignIn = ({ setIsAuthenticated }) => {
 
@@ -12,7 +15,8 @@ const SignIn = ({ setIsAuthenticated }) => {
     }, []);
 
     const handleSignIn = async (e) => {
-        e.preventDefault();
+
+        const toastId = toast.info("Signing in...", { autoClose: false }); e.preventDefault();
 
         const username = document.getElementById("entryUsername").value;
         const password = document.getElementById("entryPassword").value;
@@ -22,21 +26,37 @@ const SignIn = ({ setIsAuthenticated }) => {
             const data = await response.json();
             if (!response.ok) {// Hata durumununda alert verir ve kodun devam etmesini engeller.
 
-                alert(data.message === "Invalid credentials" ? "Invalid username and password!" : data.message || "Sign in failed!");
+                if (response.status === 401) {
+                    toast.dismiss(toastId);
+                    return toast.error("Invalid username and password!", {
+                        autoClose: 3000
+                    })
+
+                }
+
+                toast.dismiss(toastId);
+                toast.error("Sign in failed!", {
+                    autoClose: 3000
+                })
                 return;
+
+
             }
-
             localStorage.setItem("token", data.accessToken); // Tokeni localStorage'a kaydeder.
+            toast.dismiss(toastId);
 
+            toast.success("Sign in succesful.", {
+                autoClose: 3000
+            })
             setIsAuthenticated(true);
             navigate("/formmotorcycle", { replace: true });
         } catch (error) {
-
-            alert(error.message);
+            toast.error("Sign in failed!", {
+                autoClose: 3000
+            })
         }
 
     };
-
 
     return (
         <div className='signIn-container'>

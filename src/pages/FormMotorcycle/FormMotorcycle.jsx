@@ -4,6 +4,8 @@ import { getNode, getSubNode, getCamera } from "../../api/apis";
 import ProcessType from "./processtype";
 import { useNavigate } from "react-router-dom";
 import "./FormMotorcyclePage.css";
+import { toast } from "react-toastify";
+
 
 const FormMotorcycle = ({ setIsAuthenticated }) => {
 
@@ -38,7 +40,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     setNodeOptions([]);
                 }
             } catch (error) {
-                //hata-alert çağrılacak
+                toast.error("An error occurred while fetching the nodes!");
                 setNodeOptions([]);
             }
         };
@@ -59,6 +61,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     setSubNodeOptions([]);
                 }
             } catch (error) {
+                toast.error("An error occurred while fetching the subnodes!");
                 setAllSubNodes([]);
                 setSubNodeOptions([]);
             }
@@ -82,7 +85,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     setAllCamera([]);
                 }
             } catch (error) {
-                //hata-alert çağrılacak
+                toast.error("An error occurred while fetching the cameras!");
                 setCameraOptions([]);
             }
         };
@@ -94,10 +97,21 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     }, []);
 
     const handleLogout = (e) => {
-        e.preventDefault();
-        setIsAuthenticated(false);
-        localStorage.setItem("isAuthenticated", "false");
-        navigate("/sign-in", { replace: true });
+
+        try {
+            toast.info("Logging out...", { autoClose: 2000 })
+            setTimeout(() => {
+                e.preventDefault();
+                setIsAuthenticated(false);
+                localStorage.setItem("isAuthenticated", "false");
+                navigate("/sign-in", { replace: true });
+            }, 1000);
+            return;
+        } catch (error) {
+            toast.error("An error occurred while logging out, please try again!", { autoClose: 3000 })
+
+        }
+
     };
 
     //Bir node seçildiğinde ona bağlı olan subnode'ları getirir.
@@ -205,7 +219,8 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                 document.activeElement.blur();
             }
         } catch (error) {
-            console.error("Silme işlemi sırasında hata oluştu:", error);
+            toast.error("Error occurred while deleting!", { autoClose: 3000 })
+
         }
     };
 
@@ -218,35 +233,26 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     title="Node"
                     options={nodeOptions}
                     value={selectedNode}  // Değeri seçili olan Node ile güncelledik
-                    // onChange={handleNodeChange}
-                    onChange={(selected) => {
-                        handleNodeChange(selected);
-                    }}
-                    onDelete={(deletedItem) => {
-                        handleDelete(deletedItem, "Node");
-                    }}
-
+                    onChange={(selected) => { handleNodeChange(selected); }}
+                    onDelete={(deletedItem) => { handleDelete(deletedItem, "Node"); }}
                     multipleChoice={true}
                 />
+
                 <ComboBox
                     title="Sub Node"
                     options={subNodeOptions}
                     value={selectedSubNode}  // Değeri seçili olan SubNode ile güncelledik
-                    onChange={(selected) => {
-                        handleSubNodeChange(selected);
-                    }}
-                    onDelete={(deletedItem) => {
-                        handleDelete(deletedItem, "Sub Node");
-                    }} multipleChoice={true}
+                    onChange={(selected) => { handleSubNodeChange(selected); }}
+                    onDelete={(deletedItem) => { handleDelete(deletedItem, "Sub Node"); }}
+                    multipleChoice={true}
                 />
+
                 <ComboBox
                     title="Camera"
                     options={cameraOptions}
                     value={selectedCamera}
                     onChange={(selected) => { handleCameraChange(selected); }}
-                    onDelete={(deletedItem) => {
-                        handleDelete(deletedItem, "Camera");
-                    }}
+                    onDelete={(deletedItem) => { handleDelete(deletedItem, "Camera"); }}
                     multipleChoice={true}
                 />
 
