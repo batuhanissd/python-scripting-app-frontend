@@ -98,6 +98,10 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
         navigate("/sign-in", { replace: true });
     };
 
+    const handleGetLogs = () => {
+      navigate("/formlogs")
+    }
+
     const handleRun = () => {
         console.log("Selected Nodes: ", selectedNode);
         console.log("Selected SubNodes: ", selectedSubNode);
@@ -141,6 +145,10 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
 
             <div className="logout">
                 <button onClick={handleLogout}>Log Out</button>
+            </div>
+
+            <div className="logs">
+              <button onClick={handleGetLogs}>Logs</button>
             </div>
         </div>
     );

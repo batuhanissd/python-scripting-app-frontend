@@ -82,3 +82,29 @@ body.formmotorcycle-page {
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
+.logs {
+  display: flex;
+  justify-content: right;
+  position: absolute;
+  top: calc(100% + 100px);
+  right: 47%;
+}
+
+.logs button {
+  width: 100px;
+  padding: 10px 12px;
+  background: #446ae7;
+  color: #f6f6f6;
+  font-size: 15px;
+  border: 3px solid #385ac9;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.logs button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
