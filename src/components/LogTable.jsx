@@ -15,6 +15,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
 } from "@mui/material";
 import { fetchLogs } from "../api/fetch-service";
 
@@ -27,7 +28,8 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("status");
-  const [filterStatus, setFilterStatus] = useState("all"); // "all", "Success", "Error"
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,8 +68,17 @@ export default function EnhancedTable() {
     return row.status === filterStatus;
   });
 
+  // Error Message'a göre filtreleme (sadece arama terimi varsa)
+  const filteredDataWithSearch = filteredData.filter((row) => {
+    if (searchTerm === "") return true; // Arama yoksa, hepsini göster
+    return (
+      row.errorMessage &&
+      row.errorMessage.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   // Sıralama fonksiyonu
-  const sortedData = [...filteredData].sort((a, b) => {
+  const sortedData = [...filteredDataWithSearch].sort((a, b) => {
     if (order === "asc") {
       return a[orderBy] < b[orderBy] ? -1 : 1;
     } else {
@@ -79,15 +90,12 @@ export default function EnhancedTable() {
   if (error) return <p>Hata: {error}</p>;
 
   return (
-    <Box sx={{ width: "100%", position: "relative" }}>
-      {/* Status Filtresi (Sağ Üstte) */}
+    <Box sx={{ width: "100%", position: "relative", padding: "16px" }}>
+      {/* Status Filtresi */}
       <FormControl
         sx={{
-          position: "absolute",
-          top: 10,
-          right: 20,
-          minWidth: 120,
-          backgroundColor: "white",
+          width: 200,
+          marginBottom: "16px",
         }}
         size="small"
       >
@@ -96,11 +104,24 @@ export default function EnhancedTable() {
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
         >
-          <MenuItem value="all">Tümü</MenuItem>
+          <MenuItem value="all">All</MenuItem>
           <MenuItem value="Success">Success</MenuItem>
           <MenuItem value="Error">Error</MenuItem>
         </Select>
       </FormControl>
+
+      {/* Arama Inputu (Error Message için) */}
+      <TextField
+        label="Search Error Message"
+        variant="outlined"
+        size="small"
+        sx={{
+          width: 250,
+          marginBottom: "16px",
+        }}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
       <Paper sx={{ width: "100%", mb: 2, p: 2 }}>
         <TableContainer>
@@ -151,7 +172,20 @@ export default function EnhancedTable() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
                   <TableRow key={row.id}>
-                    <TableCell>{row.ipAddress}</TableCell>
+                    <TableCell>
+                      <a
+                        href={`http://${row.ipAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "blue",
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {row.ipAddress}
+                      </a>
+                    </TableCell>
                     <TableCell>{row.startTime}</TableCell>
                     <TableCell>{row.status}</TableCell>
                     <TableCell>{row.endTime}</TableCell>
@@ -164,7 +198,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={filteredData.length}
+          count={filteredDataWithSearch.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
