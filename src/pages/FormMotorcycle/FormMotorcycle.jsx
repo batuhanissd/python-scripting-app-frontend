@@ -78,7 +78,9 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     const formattedCamera = camera.map(cam => ({
                         id: cam.id,
                         name: cam.name,
-                        subId: cam.subNode.id
+                        subId: cam.subNode.id,
+                        biosId: cam.biosId,
+                        ipAddress: cam.ipAddress
 
                     }));
 
@@ -242,6 +244,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     const handleDelete = (deleteItem, type) => {
         try {
             //Silinen item'ın type'ına göre işlem yapılır.
+            // debugger;
             if (type === "Node") {
                 if (deleteItem.id === "all") { //Eğer all nodes silinirse
                     setSelectedSubNode([]);
@@ -262,7 +265,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                 setSubNodeOptions(newSubNodesOptions);
 
                 //Eğer seçili subnode varsa ona ait olan cameralar listeden kaldırır.
-                if (selectedSubNode) {
+                if (selectedSubNode && selectedSubNode.length > 0) {
                     if (selectedCamera) {
 
                         const subNodesToDelete = allSubNodes
@@ -275,22 +278,28 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                         setSelectedCamera(newSelectCamera);
 
                         //Camera seçenekleri kaldırılır. //Cameralar seçilen subnode'a bağlı olarak listelendiği için.
-                        const newCameraOptions = selectedCamera.filter(cam => !subNodesToDelete.includes(cam.subId));
+                        const newCameraOptions = newSelectCamera.filter(cam => !subNodesToDelete.includes(cam.subId));
                         setCameraOptions(newCameraOptions);
                     }
 
                     //Seçili subnode'lar güncellenir.
                     const newSelectSubnode = selectedSubNode.filter(sub => sub.nodeId !== deleteItem.id);
                     setSelectedSubNode(newSelectSubnode);
-
-
-                    if (subNodeOptions.length - 1 === selectedSubNode.length) { //seçili node'lardan biri silinirse all subnodes ve all camera seçeneği iptal olmalıdır.
+                    if (newSubNodesOptions.length - 1 === newSelectSubnode.length) { //seçili node'lardan biri silinirse all subnodes ve all camera seçeneği iptal olmalıdır.
                         setSelectedSubNode([]);
                         setSelectedCamera([]);
                         setCameraOptions([]);
                         return;
                     }
                 }
+
+                if (newSelectNode.length === 0) { // Eğer hiçbir node kalmadıysa
+                    setSelectedSubNode([]);
+                    setSubNodeOptions([]);
+                    setSelectedCamera([]);
+                    setCameraOptions([]);
+                }
+
                 document.activeElement.blur(); // Odağı kaldır (Combobox'ın mavi kalmasını engeller.)
             }
 
@@ -316,6 +325,11 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     //Seçili cameralardan silinen subnode'a bağlı olan cameralar seçimden kaldırılır.
                     const newSelectCamera = selectedCamera.filter(cam => cam.subId !== deleteItem.id);
                     setSelectedCamera(newSelectCamera);
+
+                    if (newCameraOptions.length - 1 === newSelectCamera.length) {
+                        setSelectedCamera([]);
+                        return;
+                    }
                     document.activeElement.blur();
                 }
                 if (newSelectSubnode.length === 0) {
@@ -323,6 +337,8 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     setCameraOptions([]);
                     return;
                 }
+
+
             }
 
             if (type === "Camera") {
@@ -344,7 +360,9 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
             console.log(error);
         }
     };
-
+    useEffect(() => {
+        console.log("Selected Camera:", selectedCamera);
+    }, [selectedCamera]);
     return (
         <div>
             <div className="container">
