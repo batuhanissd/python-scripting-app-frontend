@@ -82,3 +82,17 @@ body.formmotorcycle-page {
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
+.logoutbutton {
+    position: fixed;
+    top: 70px;
+    right: 70px;
+    cursor: pointer;
+    z-index: 1000;
+    /*Üstte görünmesi için*/
+}
+
+.logoutbutton img {
+    width: 25px;
+    height: 25px;
+}

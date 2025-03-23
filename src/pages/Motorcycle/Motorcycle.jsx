@@ -50,9 +50,13 @@ const Motorcycle = ({ setIsAuthenticated }) => {
                 <p>Disable Motorcycle</p>
             </div>
 
-            <div className="logout">
-                <button onClick={handleLogout}>Log Out</button>
+            <div className="button" onClick={handleLogout} id="LogOutButton">
+                <img src="/icon/logouticon.png" />
             </div>
+
+            {/* <div className="logout">
+                <button onClick={handleLogout}>Log Out</button>
+            </div> */}
         </div>
 
     )

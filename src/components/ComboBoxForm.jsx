@@ -1,6 +1,8 @@
 import * as React from 'react';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { FormControl, InputLabel, MenuItem, Select, OutlinedInput, Chip, IconButton, Box } from "@mui/material";
+import { toast } from "react-toastify";
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -30,12 +32,19 @@ export default function ({ title, options, value, onChange, onDelete, multipleCh
     };
 
     const handleDelete = (itemToDelete) => {
-
+        if (itemToDelete.name === "All Cameras") { //Mantıksal bir sorunun giderilmesi için bu if yazıldı.
+            const filteredCameras = options.filter(cam => cam.id !== "all");
+            if (filteredCameras.length === 0) {
+                toast.warning("You cannot deselect the camera selection because all subnodes are selected.")
+                return;
+            }
+        }
         setSelectedItems((prev) => prev.filter((item) => item !== itemToDelete));
 
         // Üst bileşene bildirir.
         if (onDelete) {
             onDelete(itemToDelete);
+
         }
     };
 
