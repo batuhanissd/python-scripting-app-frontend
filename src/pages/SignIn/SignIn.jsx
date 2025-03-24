@@ -40,7 +40,6 @@ const SignIn = ({ setIsAuthenticated }) => {
                 })
                 return;
 
-
             }
             localStorage.setItem("accessToken", data.accessToken); // Tokeni localStorage'a kaydeder.
             toast.dismiss(toastId);

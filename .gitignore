@@ -25,7 +25,6 @@ dist-ssr
 *.sln
 *.sw?
 
-#Files -src/pythonFile klasörünü git'e dahil edip, içindeki dosyaları ignore etmek için
+#Bunlar backendde yer alacak -en son sil
 src/pythonFile/*
-src/CameraList/*
 !src/pythonFile/.gitkeep

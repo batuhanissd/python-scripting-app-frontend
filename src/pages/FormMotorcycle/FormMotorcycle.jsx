@@ -263,6 +263,14 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                 const newSelectNode = selectedNode.filter(node => node.id !== deleteItem.id);
                 setSelectedNode(newSelectNode);
 
+                if (newSelectNode.length === 0) { // Eğer hiçbir node kalmadıysa
+                    setSelectedSubNode([]);
+                    setSubNodeOptions([]);
+                    setSelectedCamera([]);
+                    setCameraOptions([]);
+                    return;
+                }
+
                 //Subnode seçenekleri güncellendi.
                 const newSubNodesOptions = subNodeOptions.filter(sub => sub.nodeId !== deleteItem.id);
                 setSubNodeOptions(newSubNodesOptions);
@@ -296,18 +304,13 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     }
                 }
 
-                if (newSelectNode.length === 0) { // Eğer hiçbir node kalmadıysa
-                    setSelectedSubNode([]);
-                    setSubNodeOptions([]);
-                    setSelectedCamera([]);
-                    setCameraOptions([]);
-                }
+
 
                 document.activeElement.blur(); // Odağı kaldır (Combobox'ın mavi kalmasını engeller.)
             }
 
             if (type === "Sub Node") {
-
+                // debugger;
                 if (deleteItem.id === "all") {
                     setSelectedSubNode([]);
                     setSelectedCamera([]);
@@ -315,9 +318,16 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     document.activeElement.blur();
                     return;
                 }
+
                 // Seçili kameralar içinde, silinen subNode'a bağlı olanları kaldırır.
                 const newSelectSubnode = selectedSubNode.filter(sub => sub.id !== deleteItem.id);
                 setSelectedSubNode(newSelectSubnode);
+
+                if (newSelectSubnode.length === 0) {
+                    setSelectedCamera([]);
+                    setCameraOptions([]);
+                    return;
+                }
 
                 //Camera options'ları güncellenir.
                 const newCameraOptions = cameraOptions.filter(cam => cam.subId !== deleteItem.id);
@@ -335,11 +345,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     }
                     document.activeElement.blur();
                 }
-                if (newSelectSubnode.length === 0) {
-                    setSelectedCamera([]);
-                    setCameraOptions([]);
-                    return;
-                }
+
 
 
             }
@@ -375,6 +381,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
             ipAddress: camera.ipAddress
         }));
         //çalışacak dosya hangi dosya o seçilmeli
+        console.log("formatted camera:", formattedCamera);
         runPythonSc(formattedCamera);
     }
     useEffect(() => {

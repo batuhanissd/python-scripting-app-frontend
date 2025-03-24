@@ -18,6 +18,7 @@ import {
     TextField,
 } from "@mui/material";
 import { fetchLogs } from "../api/fetch-service";
+import { toast } from "react-toastify";
 
 export default function EnhancedTable() {
     const [data, setData] = useState([]);
@@ -38,6 +39,8 @@ export default function EnhancedTable() {
                 const result = await response.json();
                 setData(result);
             } catch (err) {
+                toast.error("An issue occurred while fetching log records!", { autoClose: 3000 })
+
                 setError(err.message);
             } finally {
                 setLoading(false);

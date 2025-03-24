@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const getResponse = async (username, password) => {
     try {
         const response = await fetch("https://pts.mangobulut.com/apib/auth/login", {
@@ -10,7 +12,9 @@ export const getResponse = async (username, password) => {
         return response;
 
     } catch (error) {
-        alert("Error: " + error.message);
+        toast.error("An error occurred while fetching the response!", {
+            autoClose: 3000
+        })
     }
 };
 
@@ -34,7 +38,9 @@ export const getNode = async () => {
         return await response.json();
 
     } catch (error) {
-        alert("Error: " + error.message);
+        toast.error("An error occurred while fetching the nodes!", {
+            autoClose: 3000
+        })
     }
 };
 
@@ -53,7 +59,9 @@ export const getSubNode = async () => {
         return await response.json();
 
     } catch (error) {
-        alert("Error: " + error.message);
+        toast.error("An error occurred while fetching the sub nodes!", {
+            autoClose: 3000
+        })
     }
 };
 
@@ -72,6 +80,8 @@ export const getCamera = async () => {
         return await response.json();
 
     } catch (error) {
-        alert("Error: " + error.message);
+        toast.error("An error occurred while fetching the cameras!", {
+            autoClose: 3000
+        })
     }
 };
