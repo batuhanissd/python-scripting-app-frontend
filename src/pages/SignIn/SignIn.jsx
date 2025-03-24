@@ -42,7 +42,7 @@ const SignIn = ({ setIsAuthenticated }) => {
 
 
             }
-            localStorage.setItem("token", data.accessToken); // Tokeni localStorage'a kaydeder.
+            localStorage.setItem("accessToken", data.accessToken); // Tokeni localStorage'a kaydeder.
             toast.dismiss(toastId);
 
             toast.success("Sign in succesful.", {

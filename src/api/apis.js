@@ -16,7 +16,7 @@ export const getResponse = async (username, password) => {
 
 const getToken = async () => {
 
-    return localStorage.getItem("token");
+    return localStorage.getItem("accessToken");
 };
 
 export const getNode = async () => {

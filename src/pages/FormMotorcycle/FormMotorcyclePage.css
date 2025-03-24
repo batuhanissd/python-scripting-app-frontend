@@ -86,13 +86,26 @@ body.formmotorcycle-page {
 .logoutbutton {
     position: fixed;
     top: 70px;
-    right: 70px;
+    right: 80px;
     cursor: pointer;
     z-index: 1000;
     /*Üstte görünmesi için*/
 }
 
 .logoutbutton img {
-    width: 25px;
-    height: 25px;
+    width: 42px;
+    height: 42px;
+}
+
+.logsbutton {
+    position: fixed;
+    top: 70px;
+    right: 160px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.logsbutton img {
+    width: 40px;
+    height: 40px;
 }

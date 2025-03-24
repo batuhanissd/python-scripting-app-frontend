@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ComboBox from "../../components/ComboboxForm";
 import { getNode, getSubNode, getCamera } from "../../api/apis";
-import ProcessType from "./processtype";
+//import ProcessType from "./processtype";
 import { useNavigate } from "react-router-dom";
 import "./FormMotorcyclePage.css";
 import { toast } from "react-toastify";
+import { runPythonSc } from "../../api/fetch-service";
 
 
 const FormMotorcycle = ({ setIsAuthenticated }) => {
@@ -24,6 +25,8 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     const [selectedNode, setSelectedNode] = useState(null);
     const [selectedSubNode, setSelectedSubNode] = useState(null);
     const [selectedCamera, setSelectedCamera] = useState(null);
+
+    const processType = [{ id: 1, name: "Motorcycle On" }, { id: 2, name: "Motorcycle Off" }, { id: 3, name: "Motorcycle Ftp Config" }];
 
     //! Run butonuna tıklandığında işlem yapılacak kameralar selectedCamera'da tanımlı.
 
@@ -360,6 +363,20 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
             console.log(error);
         }
     };
+
+    const handleLogsTable = async (e) => {
+        navigate("/logs");
+    }
+    const handleRun = async (e) => {
+        //burası henüz çalışmıyor
+        console.log("selected camera:", selectedCamera);
+        const formattedCamera = selectedCamera.map(camera => ({
+            biosid: camera.biosId.substring(0, 2), // İlk 2 rakamı al
+            ipAddress: camera.ipAddress
+        }));
+        //çalışacak dosya hangi dosya o seçilmeli
+        runPythonSc(formattedCamera);
+    }
     useEffect(() => {
         console.log("Selected Camera:", selectedCamera);
     }, [selectedCamera]);
@@ -410,11 +427,11 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                         multipleChoice={true}
                     />
 
-                    <ComboBox title="Process Type" options={ProcessType} />
+                    <ComboBox title="Process Type" options={processType} />
 
                 </div>
 
-                <div className="run">
+                <div className="run" onClick={handleRun}>
                     <button>Run</button>
                 </div>
 
@@ -422,6 +439,10 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
 
             <div className="logoutbutton" onClick={handleLogout} id="LogOutButton">
                 <img src="/icon/logouticon.png" />
+            </div>
+
+            <div className="logsbutton" onClick={handleLogsTable} id="LogsButton">
+                <img src="/icon/log.png" />
             </div>
         </div>
 

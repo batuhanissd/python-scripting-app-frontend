@@ -68,7 +68,8 @@ export default function ({ title, options, value, onChange, onDelete, multipleCh
                     />}
                     renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value, index) => (
+                            {/* {selected.map((value, index) => ( */}
+                            {(Array.isArray(selected) ? selected : [selected]).map((value, index) => (
                                 <Chip
                                     key={`${value.id}-${index}`}
                                     label={value.name}
