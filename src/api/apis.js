@@ -1,4 +1,6 @@
 import { toast } from "react-toastify";
+const FETCHNODE_API_URL = import.meta.env.VITE_FETCHNODE_API_URL;
+// import { getHeaders } from "./fetch-service";
 
 export const getResponse = async (username, password) => {
     try {
@@ -23,26 +25,57 @@ const getToken = async () => {
     return localStorage.getItem("accessToken");
 };
 
-export const getNode = async () => {
-    const token = await getToken();
-    try {
-        const response = await fetch("https://pts.mangobulut.com/apib/node", {
-            method: "GET",
-            headers: {
-                "ContentType": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
+// function getHeaders() {
+//     const accessToken = localStorage.getItem("accessToken");
 
-        });
+//     if (!accessToken) throw new Error("AccessToken is missing");
 
-        return await response.json();
+//     return {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${accessToken}`,
+//     };
+// }
 
-    } catch (error) {
-        toast.error("An error occurred while fetching the nodes!", {
-            autoClose: 3000
-        })
-    }
-};
+
+
+// export async function getNode() {
+//     try {
+//         const response = await fetch(`${FETCHNODE_API_URL}`, {
+//             method: "POST",
+//             headers: getHeaders(),
+//         });
+//         if (!response.ok) throw new Error();
+//         return response.json();
+
+//     } catch (error) {
+//         toast.error("An error occurred while fetching the nodes!", {
+//             autoClose: 3000
+//         })
+//         throw error;
+//     }
+// };
+
+
+// export const getNode = async () => {
+//     const token = await getToken();
+//     try {
+//         const response = await fetch("https://pts.mangobulut.com/apib/node", {
+//             method: "GET",
+//             headers: {
+//                 "ContentType": "application/json",
+//                 "Authorization": `Bearer ${token}`
+//             }
+
+//         });
+
+//         return await response.json();
+
+//     } catch (error) {
+//         toast.error("An error occurred while fetching the nodes!", {
+//             autoClose: 3000
+//         })
+//     }
+// };
 
 export const getSubNode = async () => {
     const token = await getToken();

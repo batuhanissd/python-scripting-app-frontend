@@ -1,6 +1,12 @@
 const FETCH_OBJECT_API_URL = import.meta.env.VITE_FETCHSERVICE_API_URL;
 const RUN_PYTHON_API_URL = import.meta.env.VITE_RUN_PYTHON_API_URL;
 const FETCH_LOGS_API_URL = import.meta.env.VITE_FETCHLOGS_API_URL;
+const FETCHNODE_API_URL = import.meta.env.VITE_FETCHNODE_API_URL;
+const FETCHSUBNODE_API_URL = import.meta.env.VITE_FETCHSUBNODE_API_URL;
+const FETCHCAMERA_API_URL = import.meta.env.VITE_FETCHCAMERA_API_URL;
+
+import { toast } from "react-toastify";
+
 
 if (!FETCH_OBJECT_API_URL || !RUN_PYTHON_API_URL) {
     throw new Error("API_URL environment variables are missing.");
@@ -62,3 +68,54 @@ export async function runPythonSc(ipAddresses) {
         throw new Error("Python script çalıştırma hatası");
     }
 }
+
+export async function getNode() {
+    try {
+        const response = await fetch(`${FETCHNODE_API_URL}`, {
+            method: "POST",
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error();
+        return response.json();
+
+    } catch (error) {
+        toast.error("An error occurred while fetching the nodes!", {
+            autoClose: 3000
+        })
+        throw error;
+    }
+};
+
+export async function getSubNode() {
+    try {
+        const response = await fetch(`${FETCHSUBNODE_API_URL}`, {
+            method: "POST",
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error();
+        return response.json();
+
+    } catch (error) {
+        toast.error("An error occurred while fetching the sub nodes!", {
+            autoClose: 3000
+        })
+        throw error;
+    }
+};
+
+export async function getCamera() {
+    try {
+        const response = await fetch(`${FETCHCAMERA_API_URL}`, {
+            method: "POST",
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error();
+        return response.json();
+
+    } catch (error) {
+        toast.error("An error occurred while fetching the cameras!", {
+            autoClose: 3000
+        })
+        throw error;
+    }
+};

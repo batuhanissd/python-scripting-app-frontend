@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ComboBox from "../../components/ComboboxForm";
-import { getNode, getSubNode, getCamera } from "../../api/apis";
-//import ProcessType from "./processtype";
+//import { getSubNode, getCamera } from "../../api/apis";
+import { getNode, getSubNode, getCamera } from "../../api/fetch-service";
+//import { getNode } from "../../api/fetch-service";
 import { useNavigate } from "react-router-dom";
 import "./FormMotorcyclePage.css";
 import { toast } from "react-toastify";
@@ -46,6 +47,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                 }
             } catch (error) {
                 toast.error("An error occurred while fetching the nodes!");
+                console.error(error);
                 setNodeOptions([]);
             }
         };
@@ -304,8 +306,6 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     }
                 }
 
-
-
                 document.activeElement.blur(); // Odağı kaldır (Combobox'ın mavi kalmasını engeller.)
             }
 
@@ -346,8 +346,6 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                     document.activeElement.blur();
                 }
 
-
-
             }
 
             if (type === "Camera") {
@@ -375,7 +373,6 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     }
     const handleRun = async (e) => {
         //burası henüz çalışmıyor
-        console.log("selected camera:", selectedCamera);
         const formattedCamera = selectedCamera.map(camera => ({
             biosid: camera.biosId.substring(0, 2), // İlk 2 rakamı al
             ipAddress: camera.ipAddress
@@ -384,9 +381,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
         console.log("formatted camera:", formattedCamera);
         runPythonSc(formattedCamera);
     }
-    useEffect(() => {
-        console.log("Selected Camera:", selectedCamera);
-    }, [selectedCamera]);
+
     return (
         <div>
             <div className="container">
