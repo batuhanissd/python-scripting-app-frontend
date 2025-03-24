@@ -1,0 +1,12 @@
+.homebutton {
+    position: fixed;
+    top: 70px;
+    right: 160px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.homebutton img {
+    width: 40px;
+    height: 40px;
+}

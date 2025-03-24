@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import FormMotorcyclePage from './pages/FormMotorcycle/FormMotorcycle.jsx';
-import LogsPage from './pages/Logs/Logs.jsx'
+import LogsPage from './pages/LogsPage/Logs.jsx'
 import SignInPage from "./pages/SignIn/SignIn";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

@@ -40,7 +40,7 @@ export async function fetchLogs() {
         if (!response.ok) throw new Error();
         return response;
     } catch (error) {
-        console.error(`error: `, error);
+        console.error("error: ", error);
         throw error;
     }
 }
