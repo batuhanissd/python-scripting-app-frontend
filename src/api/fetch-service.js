@@ -4,6 +4,7 @@ const FETCH_LOGS_API_URL = import.meta.env.VITE_FETCHLOGS_API_URL;
 const FETCHNODE_API_URL = import.meta.env.VITE_FETCHNODE_API_URL;
 const FETCHSUBNODE_API_URL = import.meta.env.VITE_FETCHSUBNODE_API_URL;
 const FETCHCAMERA_API_URL = import.meta.env.VITE_FETCHCAMERA_API_URL;
+const USERLOGINSERVICE_API_URL = import.meta.env.VITE_USERLOGINSERVICE_API_URL;
 
 import { toast } from "react-toastify";
 
@@ -33,6 +34,9 @@ export async function fetchObject(endpoint) {
         return response;
     } catch (error) {
         console.error(`${endpoint} error: `);
+        toast.error(`An error occurred at "${endpoint}".`, {
+            autoClose: 3000
+        });
         throw error;
     }
 }
@@ -46,7 +50,9 @@ export async function fetchLogs() {
         if (!response.ok) throw new Error();
         return response;
     } catch (error) {
-        console.error("error: ", error);
+        toast.error("An error occurred while fetching logs. Please try again.", {
+            autoClose: 3000
+        });
         throw error;
     }
 }
@@ -64,7 +70,9 @@ export async function runPythonSc(ipAddresses) {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error("Hata:", error);
+        toast.error("The file could not be executed. Please try again.", {
+            autoClose: 3000
+        });
         throw new Error("Python script çalıştırma hatası");
     }
 }
@@ -114,6 +122,28 @@ export async function getCamera() {
 
     } catch (error) {
         toast.error("An error occurred while fetching the cameras!", {
+            autoClose: 3000
+        })
+        throw error;
+    }
+};
+
+export const getResponse = async (username, password) => { //for login
+    try {
+        const response = await fetch(`${USERLOGINSERVICE_API_URL}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, password })
+        });
+        console.log("response-f", response);
+
+        return response;
+
+    } catch (error) {
+        console.log("error:-f", error);
+        toast.error("Sign in failed!", {
             autoClose: 3000
         })
         throw error;

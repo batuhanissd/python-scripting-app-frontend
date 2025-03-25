@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./signInPage.css";
-import { getResponse } from "../../api/apis";
+import { getResponse } from "../../api/fetch-service";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 const SignIn = ({ setIsAuthenticated }) => {
 
@@ -12,6 +11,7 @@ const SignIn = ({ setIsAuthenticated }) => {
 
     useEffect(() => {
         document.body.className = "signin-page";
+
     }, []);
 
     const handleSignIn = async (e) => {
@@ -23,7 +23,10 @@ const SignIn = ({ setIsAuthenticated }) => {
 
         try {
             const response = await getResponse(username, password);
+            console.log("response", response);
             const data = await response.json();
+            console.log("data", data);
+
             if (!response.ok) {// Hata durumununda alert verir ve kodun devam etmesini engeller.
 
                 if (response.status === 401) {
@@ -43,18 +46,17 @@ const SignIn = ({ setIsAuthenticated }) => {
             }
             localStorage.setItem("accessToken", data.accessToken); // Tokeni localStorage'a kaydeder.
             toast.dismiss(toastId);
-
             toast.success("Sign in succesful.", {
                 autoClose: 3000
             })
             setIsAuthenticated(true);
             navigate("/formmotorcycle", { replace: true });
         } catch (error) {
+            toast.dismiss(toastId);
             toast.error("Sign in failed!", {
                 autoClose: 3000
             })
         }
-
     };
 
     return (
