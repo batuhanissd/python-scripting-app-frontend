@@ -23,9 +23,7 @@ const SignIn = ({ setIsAuthenticated }) => {
 
         try {
             const response = await getResponse(username, password);
-            console.log("response", response);
             const data = await response.json();
-            console.log("data", data);
 
             if (!response.ok) {// Hata durumununda alert verir ve kodun devam etmesini engeller.
 

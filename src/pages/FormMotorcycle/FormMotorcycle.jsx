@@ -374,7 +374,12 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
         navigate("/logs");
     }
     const handleRun = async (e) => {
-        //burası henüz çalışmıyor
+
+        if (!selectedCamera || selectedCamera.length === 0) {
+            toast.warning("Please select camera.", { autoClose: 3000 })
+            return;
+        }
+
         const formattedCamera = selectedCamera.map(camera => ({
             biosid: camera.biosId.substring(0, 2), // İlk 2 rakamı al
             ipAddress: camera.ipAddress
@@ -390,9 +395,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     const handleProcessTypeChange = async (selected) => {
         setselectedProcessType(selected);
     }
-    useEffect(() => {
-        console.log("selected processtype:", selectedProcessType);
-    }, [selectedProcessType]);
+
     return (
         <div>
             <div className="container">
