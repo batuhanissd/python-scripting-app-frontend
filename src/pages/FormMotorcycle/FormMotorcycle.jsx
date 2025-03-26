@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ComboBox from "../../components/ComboboxForm";
-//import { getSubNode, getCamera } from "../../api/apis";
 import { getNode, getSubNode, getCamera } from "../../api/fetch-service";
-//import { getNode } from "../../api/fetch-service";
 import { useNavigate } from "react-router-dom";
 import "./FormMotorcyclePage.css";
 import { toast } from "react-toastify";
@@ -30,7 +28,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
 
     const processType = [{ id: "motoron", name: "Motorcycle On" }, { id: "motoroff", name: "Motorcycle Off" }, { id: "ftpconfig", name: "Motorcycle Ftp Config" }];
 
-    //! Run butonuna tıklandığında işlem yapılacak kameralar selectedCamera'da tanımlı.
+    const [isRunning, setIsRunning] = useState(false);
 
     useEffect(() => {
         document.body.className = "formmotorcycle-page";
@@ -373,24 +371,56 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     const handleLogsTable = async (e) => {
         navigate("/logs");
     }
-    const handleRun = async (e) => {
+    // const handleRun = async (e) => {
 
+    //     if (!selectedCamera || selectedCamera.length === 0) {
+    //         toast.warning("Please select camera.", { autoClose: 3000 })
+    //         return;
+    //     }
+
+    //     const formattedCamera = selectedCamera.map(camera => ({
+    //         biosid: camera.biosId.substring(0, 2), // İlk 2 rakamı al
+    //         ipAddress: camera.ipAddress
+    //     }));
+
+    //     if (selectedProcessType) {
+    //         const toastId = toast.info("Signing in...", { autoClose: false });
+
+    //         await runPythonSc(selectedProcessType.id, formattedCamera);
+    //         //runButton disable
+    //         toast.dismiss(toastId);
+    //         return;
+    //     }
+    //     toast.warning("Please select process type.", { autoClose: 3000 })
+    // }
+    const handleRun = async (e) => {
         if (!selectedCamera || selectedCamera.length === 0) {
-            toast.warning("Please select camera.", { autoClose: 3000 })
+            toast.warning("Please select a camera.", { autoClose: 3000 });
+            return;
+        }
+
+        if (!selectedProcessType) {
+            toast.warning("Please select a process type.", { autoClose: 3000 });
             return;
         }
 
         const formattedCamera = selectedCamera.map(camera => ({
-            biosid: camera.biosId.substring(0, 2), // İlk 2 rakamı al
+            biosid: camera.biosId.substring(0, 2),
             ipAddress: camera.ipAddress
         }));
 
-        if (selectedProcessType) {
+        setIsRunning(true);  // Butonu disable et
+        const toastId = toast.info("Running...", { autoClose: false });
+
+        try {
             await runPythonSc(selectedProcessType.id, formattedCamera);
-            return;
+        } catch (error) {
+            toast.error("An error occurred while running the process.");
+        } finally {
+            setIsRunning(false); // Butonu tekrar aktif hale getir
+            toast.dismiss(toastId);
         }
-        toast.warning("Please select process type.", { autoClose: 3000 })
-    }
+    };
 
     const handleProcessTypeChange = async (selected) => {
         setselectedProcessType(selected);
@@ -452,8 +482,10 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
 
                 </div>
 
-                <div className="run" onClick={handleRun}>
-                    <button>Run</button>
+                <div className="run" >
+                    <button onClick={handleRun} disabled={isRunning}>
+                        {isRunning ? "Running..." : "Run"}
+                    </button>
                 </div>
 
             </div>

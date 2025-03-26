@@ -16,7 +16,8 @@ const SignIn = ({ setIsAuthenticated }) => {
 
     const handleSignIn = async (e) => {
 
-        const toastId = toast.info("Signing in...", { autoClose: false }); e.preventDefault();
+        const toastId = toast.info("Signing in...", { autoClose: false });
+        e.preventDefault();
 
         const username = document.getElementById("entryUsername").value;
         const password = document.getElementById("entryPassword").value;
