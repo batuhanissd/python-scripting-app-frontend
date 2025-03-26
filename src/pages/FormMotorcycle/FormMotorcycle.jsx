@@ -371,28 +371,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     const handleLogsTable = async (e) => {
         navigate("/logs");
     }
-    // const handleRun = async (e) => {
 
-    //     if (!selectedCamera || selectedCamera.length === 0) {
-    //         toast.warning("Please select camera.", { autoClose: 3000 })
-    //         return;
-    //     }
-
-    //     const formattedCamera = selectedCamera.map(camera => ({
-    //         biosid: camera.biosId.substring(0, 2), // İlk 2 rakamı al
-    //         ipAddress: camera.ipAddress
-    //     }));
-
-    //     if (selectedProcessType) {
-    //         const toastId = toast.info("Signing in...", { autoClose: false });
-
-    //         await runPythonSc(selectedProcessType.id, formattedCamera);
-    //         //runButton disable
-    //         toast.dismiss(toastId);
-    //         return;
-    //     }
-    //     toast.warning("Please select process type.", { autoClose: 3000 })
-    // }
     const handleRun = async (e) => {
         if (!selectedCamera || selectedCamera.length === 0) {
             toast.warning("Please select a camera.", { autoClose: 3000 });
@@ -409,7 +388,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
             ipAddress: camera.ipAddress
         }));
 
-        setIsRunning(true);  // Butonu disable et
+        setIsRunning(true);
         const toastId = toast.info("Running...", { autoClose: false });
 
         try {
@@ -417,7 +396,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
         } catch (error) {
             toast.error("An error occurred while running the process.");
         } finally {
-            setIsRunning(false); // Butonu tekrar aktif hale getir
+            setIsRunning(false);
             toast.dismiss(toastId);
         }
     };
