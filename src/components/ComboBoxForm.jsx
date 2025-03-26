@@ -39,10 +39,8 @@ export default function ({ title, options, value, onChange, onDelete, multipleCh
                 return;
             }
         }
-
         if (title === "Process Type") {
-            setSelectedItems(value || []);
-            document.activeElement.blur();
+            toast.warning("Process type must be selected.", { autoClose: 3000 })
             return;
         }
         setSelectedItems((prev) => prev.filter((item) => item !== itemToDelete));
@@ -50,7 +48,6 @@ export default function ({ title, options, value, onChange, onDelete, multipleCh
         // Üst bileşene bildirir.
         if (onDelete) {
             onDelete(itemToDelete);
-
         }
     };
 

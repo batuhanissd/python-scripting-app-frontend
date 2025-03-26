@@ -57,13 +57,14 @@ export async function fetchLogs() {
     }
 }
 
-export async function runPythonSc(ipAddresses) {
+export async function runPythonSc(processType, selectedcamera) {
     try {
         const response = await fetch(`${RUN_PYTHON_API_URL}`, {
             method: "POST",
             headers: getHeaders(),
             body: JSON.stringify({
-                ipAddresses: ipAddresses.map((ip) => ({ ipAddress: ip })),
+                processType: processType,
+                selectedcamera: selectedcamera
             }),
         });
 

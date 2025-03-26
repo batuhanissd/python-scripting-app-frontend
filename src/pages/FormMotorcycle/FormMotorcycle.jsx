@@ -26,8 +26,9 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
     const [selectedNode, setSelectedNode] = useState(null);
     const [selectedSubNode, setSelectedSubNode] = useState(null);
     const [selectedCamera, setSelectedCamera] = useState(null);
+    const [selectedProcessType, setselectedProcessType] = useState(null);
 
-    const processType = [{ id: 1, name: "Motorcycle On" }, { id: 2, name: "Motorcycle Off" }, { id: 3, name: "Motorcycle Ftp Config" }];
+    const processType = [{ id: "motoron", name: "Motorcycle On" }, { id: "motoroff", name: "Motorcycle Off" }, { id: "ftpconfig", name: "Motorcycle Ftp Config" }];
 
     //! Run butonuna tıklandığında işlem yapılacak kameralar selectedCamera'da tanımlı.
 
@@ -362,6 +363,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                 setSelectedCamera(newSelectCamera);
                 document.activeElement.blur();
             }
+
         } catch (error) {
             toast.error("Error occurred while deleting!", { autoClose: 3000 })
             console.log(error);
@@ -377,11 +379,20 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
             biosid: camera.biosId.substring(0, 2), // İlk 2 rakamı al
             ipAddress: camera.ipAddress
         }));
-        //çalışacak dosya hangi dosya o seçilmeli
-        console.log("formatted camera:", formattedCamera);
-        runPythonSc(formattedCamera);
+
+        if (selectedProcessType) {
+            await runPythonSc(selectedProcessType.id, formattedCamera);
+            return;
+        }
+        toast.warning("Please select process type.", { autoClose: 3000 })
     }
 
+    const handleProcessTypeChange = async (selected) => {
+        setselectedProcessType(selected);
+    }
+    useEffect(() => {
+        console.log("selected processtype:", selectedProcessType);
+    }, [selectedProcessType]);
     return (
         <div>
             <div className="container">
@@ -429,7 +440,12 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
                         multipleChoice={true}
                     />
 
-                    <ComboBox title="Process Type" options={processType} />
+                    <ComboBox
+                        title="Process Type"
+                        options={processType}
+                        value={selectedProcessType}
+                        onChange={(selected) => { handleProcessTypeChange(selected); }}
+                    />
 
                 </div>
 

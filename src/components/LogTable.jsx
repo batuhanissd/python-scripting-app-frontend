@@ -18,7 +18,6 @@ import {
     TextField,
 } from "@mui/material";
 import { fetchLogs } from "../api/fetch-service";
-import { toast } from "react-toastify";
 
 export default function EnhancedTable() {
     const [data, setData] = useState([]);
@@ -39,8 +38,6 @@ export default function EnhancedTable() {
                 const result = await response.json();
                 setData(result);
             } catch (err) {
-                toast.error("An issue occurred while fetching log records!", { autoClose: 3000 })
-
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -75,8 +72,12 @@ export default function EnhancedTable() {
     const filteredDataWithSearch = filteredData.filter((row) => {
         if (searchTerm === "") return true; // Arama yoksa, hepsini göster
         return (
-            row.errorMessage &&
-            row.errorMessage.toLowerCase().includes(searchTerm.toLowerCase())
+            (row.connectionErrorMessage &&
+                row.connectionErrorMessage
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())) ||
+            (row.xmlErrorMessage &&
+                row.xmlErrorMessage.toLowerCase().includes(searchTerm.toLowerCase()))
         );
     });
 
@@ -151,15 +152,6 @@ export default function EnhancedTable() {
                                 </TableCell>
                                 <TableCell>
                                     <TableSortLabel
-                                        active={orderBy === "status"}
-                                        direction={orderBy === "status" ? order : "asc"}
-                                        onClick={() => handleRequestSort("status")}
-                                    >
-                                        Status
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell>
-                                    <TableSortLabel
                                         active={orderBy === "endTime"}
                                         direction={orderBy === "endTime" ? order : "asc"}
                                         onClick={() => handleRequestSort("endTime")}
@@ -167,7 +159,19 @@ export default function EnhancedTable() {
                                         End Time
                                     </TableSortLabel>
                                 </TableCell>
+                                <TableCell>Proccess Type</TableCell>
+                                <TableCell>
+                                    <TableSortLabel
+                                        active={orderBy === "status"}
+                                        direction={orderBy === "status" ? order : "asc"}
+                                        onClick={() => handleRequestSort("status")}
+                                    >
+                                        Connection Status
+                                    </TableSortLabel>
+                                </TableCell>
                                 <TableCell>Error Message</TableCell>
+                                <TableCell>XML Status</TableCell>
+                                <TableCell>XML Error Message</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -190,9 +194,12 @@ export default function EnhancedTable() {
                                             </a>
                                         </TableCell>
                                         <TableCell>{row.startTime}</TableCell>
-                                        <TableCell>{row.status}</TableCell>
                                         <TableCell>{row.endTime}</TableCell>
-                                        <TableCell>{row.errorMessage}</TableCell>
+                                        <TableCell>{row.processType}</TableCell>
+                                        <TableCell>{row.connectionStatus}</TableCell>
+                                        <TableCell>{row.connectionErrorMessage}</TableCell>
+                                        <TableCell>{row.xmlStatus}</TableCell>
+                                        <TableCell>{row.xmlErrorMessage}</TableCell>
                                     </TableRow>
                                 ))}
                         </TableBody>
