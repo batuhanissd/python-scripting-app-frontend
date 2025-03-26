@@ -395,6 +395,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
             await runPythonSc(selectedProcessType.id, formattedCamera);
         } catch (error) {
             toast.error("An error occurred while running the process.");
+            toast.dismiss(toastId);
         } finally {
             setIsRunning(false);
             toast.dismiss(toastId);
