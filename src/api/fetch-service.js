@@ -24,6 +24,17 @@ function getHeaders() {
     };
 }
 
+function getHeadersinPtsAuth() {
+    const ptsToken = localStorage.getItem("PTSAuth");
+
+    if (!ptsToken) throw new Error("AccessToken is missing");
+
+    return {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${ptsToken}`,
+    };
+}
+
 export async function fetchObject(endpoint) {
     try {
         const response = await fetch(`${FETCH_OBJECT_API_URL}${endpoint}`, {
@@ -82,7 +93,7 @@ export async function getNode() {
     try {
         const response = await fetch(`${FETCHNODE_API_URL}`, {
             method: "POST",
-            headers: getHeaders(),
+            headers: getHeadersinPtsAuth(),
         });
         if (!response.ok) throw new Error();
         return response.json();
@@ -99,7 +110,7 @@ export async function getSubNode() {
     try {
         const response = await fetch(`${FETCHSUBNODE_API_URL}`, {
             method: "POST",
-            headers: getHeaders(),
+            headers: getHeadersinPtsAuth(),
         });
         if (!response.ok) throw new Error();
         return response.json();
@@ -116,7 +127,7 @@ export async function getCamera() {
     try {
         const response = await fetch(`${FETCHCAMERA_API_URL}`, {
             method: "POST",
-            headers: getHeaders(),
+            headers: getHeadersinPtsAuth(),
         });
         if (!response.ok) throw new Error();
         return response.json();
@@ -138,12 +149,9 @@ export const getResponse = async (username, password) => { //for login
             },
             body: JSON.stringify({ username, password })
         });
-        console.log("response-f", response);
-
         return response;
 
     } catch (error) {
-        console.log("error:-f", error);
         toast.error("Sign in failed!", {
             autoClose: 3000
         })

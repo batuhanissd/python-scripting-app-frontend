@@ -43,6 +43,7 @@ const SignIn = ({ setIsAuthenticated }) => {
 
             }
             localStorage.setItem("accessToken", data.accessToken); // Tokeni localStorage'a kaydeder.
+            localStorage.setItem("PTSAuth", data.PTSAuth);
             toast.dismiss(toastId);
             toast.success("Sign in succesful.", {
                 autoClose: 3000
