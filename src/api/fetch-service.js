@@ -75,7 +75,7 @@ export async function runPythonSc(processType, selectedcamera) {
             headers: getHeaders(),
             body: JSON.stringify({
                 processType: processType,
-                selectedcamera: selectedcamera
+                selectedCamera: selectedcamera
             }),
         });
 
