@@ -398,6 +398,7 @@ const FormMotorcycle = ({ setIsAuthenticated }) => {
         } finally {
             setIsRunning(false);
             toast.dismiss(toastId);
+            toast.success("Operation succesful.", { autoClose: 3000 })
         }
     };
 
